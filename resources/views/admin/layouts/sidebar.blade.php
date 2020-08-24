@@ -62,8 +62,12 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">User Components:</h6>
             <a class="collapse-item" href="{{ route('user-list')}}">User List</a>
+
+            @if (Auth::user()->is_admin != '1' && Auth::user()->is_admin != '0')
             <a class="collapse-item" href="{{ route('user-add')}}">Add New</a>
-            <a class="collapse-item" href="cards.html">Add New</a>
+            @endif 
+            
+            <a class="collapse-item" href="cards.html">Add New test</a>
           </div>
         </div>
       </li>

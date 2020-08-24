@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -39,7 +40,7 @@ class UserController extends Controller
             'email'         => $request->email,
             'mobile'        => $request->mobile,
             'is_admin'      => $request->is_admin,
-            'password'      => $request->password,
+            'password'      => Hash::make($request->password),
             'created_at'    => Carbon::now(),
         ]);
 
@@ -54,4 +55,27 @@ class UserController extends Controller
 
     }
 
+    public function UserEdit($id){
+        $singleUserData = User::findOrFail($id);
+        return view('admin.user_edit', \compact('singleUserData'));
+    }
+
+    public function UserUpdate(Request $request){
+
+        $request->validate([
+            'name'      => 'required',
+            'email' => 'required|email',
+            'mobile' => 'required|numeric',
+            'is_admin' => 'required|numeric',
+        ]);
+
+        $updateUser = User::find($request->id);
+        $updateUser->name = $request->name;
+        $updateUser->email = $request->email;
+        $updateUser->mobile = $request->mobile;
+        $updateUser->is_admin = $request->is_admin;
+        $updateUser->save();
+
+        return redirect('admin/user/list')->with('status','User successfully Update');
+    }
 }

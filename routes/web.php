@@ -27,7 +27,7 @@ Route::get('/home', 'Front\HomeController@index')->name('home');
 // Admin route
 Route::get('admin/home', 'Admin\HomeController@index')->name('admin-home');
 
-Route::prefix('admin')->group(function(){
+Route::group( ['prefix'=>'admin', 'middleware'=>['auth','admin']],  function(){
 
     Route::get('/user/list', 'Admin\UserController@UserList')->name('user-list');
     
@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function(){
     Route::post('/user/store', 'Admin\UserController@UserStore')->name('user-store');
     Route::get('/user/delete/{id}', 'Admin\UserController@UserDelete')->name('user-delete');
     Route::get('/user/edit/{id}', 'Admin\UserController@UserEdit')->name('user-edit');
-    Route::post('/user/update/{id}', 'Admin\UserController@UserEdit')->name('user-update');
+    Route::post('/user/update/', 'Admin\UserController@UserUpdate')->name('user-update');
 
 });
+
